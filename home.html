@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMKN 2 Singosari - Disposisi Surat</title>
+    <title>Dashboard - SMKN 2 Singosari</title>
     <style>
         * {
             margin: 0;
@@ -13,523 +13,742 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 1rem 2rem;
+            background: #f0f2f5;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 100vh;
         }
 
-        .logo-section {
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
             display: flex;
             align-items: center;
             gap: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .school-icon {
-            width: 40px;
-            height: 40px;
+        .logo-sidebar {
+            width: 50px;
+            height: 50px;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
         }
 
-        .school-name {
-            color: white;
-            font-size: 1.3rem;
+        .school-name-sidebar {
+            font-size: 1.1rem;
             font-weight: 600;
         }
 
-        .header-buttons {
+        .menu-section {
+            padding: 1rem 0;
+        }
+
+        .menu-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .menu-item {
+            padding: 0.9rem 1.5rem;
             display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: #fff;
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: #fff;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
             gap: 1rem;
         }
 
-        .btn {
-            padding: 0.6rem 1.5rem;
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .top-nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .notification-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .notification-btn:hover {
+            background: #e2e8f0;
+            transform: scale(1.05);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .upload-btn {
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-
-        .btn-outline:hover {
-            background: white;
-            color: #1e3c72;
-            transform: translateY(-2px);
-        }
-
-        .btn-solid {
-            background: white;
-            color: #1e3c72;
-        }
-
-        .btn-solid:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,255,255,0.3);
-        }
-
-        /* Hero Section */
-  .hero {
-    min-height: 90vh;
-    background: url('./images/inorasiv.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-        
-        /* Overlay untuk memastikan teks tetap terbaca */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: none;
-            z-index: 2;
-        }
-
-        /* BARIS 95-111: BAGIAN MASKOT SEKOLAH */
-        /* Ganti URL di background-image dengan path maskot sekolah Anda */
-        /* Contoh: background-image: url('images/maskot-sekolah.png'); */
-       .mascot-bg {
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    right: 10%;
-    bottom: -50px;
-    opacity: 0.15;
-    background-image: url('./images/inorasiv.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    animation: float 6s ease-in-out infinite;
-    z-index: 0;
-}
-
-        /* AKHIR BAGIAN MASKOT */
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Decorative elements */
-        .circle-decoration-1 {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50%;
-            top: -100px;
-            left: -100px;
-            animation: pulse 4s ease-in-out infinite;
-            z-index: 1;
-        }
-
-        .circle-decoration-2 {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 50%;
-            bottom: -50px;
-            left: 20%;
-            animation: pulse 5s ease-in-out infinite;
-            z-index: 1;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .hero-content {
-            text-align: center;
-            color: white;
-            z-index: 2;
-            padding: 2rem;
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 20px rgba(0,0,0,0.3);
-            animation: slideDown 0.8s ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-subtitle {
-            font-size: 1.3rem;
-            margin-bottom: 3rem;
-            opacity: 0.95;
-            animation: slideUp 0.8s ease-out 0.2s backwards;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 0.95;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            animation: fadeIn 0.8s ease-out 0.4s backwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .btn-hero {
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .btn-primary {
-            background: white;
-            color: #667eea;
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(255,255,255,0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 5rem 2rem;
-            background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #2d3748;
-            margin-bottom: 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: white;
+        /* Content Area */
+        .content-area {
             padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            flex: 1;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
-        .feature-icon {
+        .stat-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.8rem;
-            margin-bottom: 1.5rem;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
-        .feature-title {
-            font-size: 1.3rem;
+        .stat-icon.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .stat-icon.red {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
             color: #2d3748;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-info p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        /* Recent Activity Section */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #2d3748;
             font-weight: 600;
         }
 
-        .feature-desc {
+        .view-all-btn {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .view-all-btn:hover {
+            color: #764ba2;
+        }
+
+        /* Activity Item */
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .activity-item:hover {
+            background: #f8fafc;
+        }
+
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: #f0f2f5;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-title {
+            color: #2d3748;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-time {
             color: #718096;
-            line-height: 1.6;
+            font-size: 0.85rem;
         }
 
-        /* Stats Section */
-        .stats {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 4rem 2rem;
-            color: white;
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
-        .stats-grid {
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-badge.approved {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-badge.rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
+            gap: 1rem;
         }
 
-        .stat-item {
+        .quick-action-btn {
+            padding: 1.2rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
         }
 
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+        .quick-action-btn:hover {
+            border-color: #667eea;
+            background: #f8fafc;
+            transform: translateY(-3px);
         }
 
-        .stat-label {
-            font-size: 1.1rem;
-            opacity: 0.9;
+        .quick-action-icon {
+            font-size: 2rem;
         }
 
-        /* Footer */
-        .footer {
-            background: #1a202c;
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
+        .quick-action-text {
+            color: #2d3748;
+            font-weight: 500;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
+            .sidebar {
+                transform: translateX(-100%);
             }
 
-            .hero-subtitle {
-                font-size: 1.1rem;
+            .main-content {
+                margin-left: 0;
             }
 
-            .hero-buttons {
-                flex-direction: column;
+            .top-navbar {
+                padding: 1rem;
             }
 
-            .btn-hero {
-                width: 100%;
+            .content-area {
+                padding: 1rem;
             }
 
-            .school-name {
-                font-size: 1rem;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
-
-            .mascot-bg {
-                width: 300px;
-                height: 300px;
-                right: 5%;
-            }
-
-            .logo img {
-            width: 40px;
-            height: auto;
-            margin-right: 10px;
-}
-
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="logo-section">
-            <div class="school-icon">🏫
-                <img src="images/logosekola.png" alt="logo">
-            </div>
-            <h1 class="school-name">SMKN 2 SINGOSARI</h1>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-sidebar">🏫</div>
+            <div class="school-name-sidebar">SMKN 2 SINGOSARI</div>
         </div>
-        <div class="header-buttons">
-            <button class="btn btn-outline">Masuk</button>
-            <button class="btn btn-solid">Daftar</button>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="mascot-bg"></div>
-        <div class="hero-content">
-            <h1 class="hero-title">DISPOSISI SURAT</h1>
-            <p class="hero-subtitle">Sistem Manajemen Surat Digital yang Efisien dan Terintegrasi</p>
-            <div class="hero-buttons">
-                <button class="btn-hero btn-primary">Mulai Sekarang</button>
-                <button class="btn-hero btn-secondary">Pelajari Lebih Lanjut</button>
-            </div>
-        </div>
-    </section>
+        <nav class="menu-section">
+            <a href="#" class="menu-item active">
+                <span class="menu-icon">🏠</span>
+                <span>Home</span>
+            </a>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Fitur Unggulan</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📨</div>
-                    <h3 class="feature-title">Surat Masuk</h3>
-                    <p class="feature-desc">Kelola semua surat masuk dengan sistem yang terorganisir dan mudah dilacak</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📤</div>
-                    <h3 class="feature-title">Surat Keluar</h3>
-                    <p class="feature-desc">Buat dan kirim surat keluar dengan template yang profesional</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✅</div>
-                    <h3 class="feature-title">Disposisi Cepat</h3>
-                    <p class="feature-desc">Teruskan surat ke pihak terkait dengan sistem disposisi yang efisien</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Laporan Real-time</h3>
-                    <p class="feature-desc">Monitor status surat dan dapatkan laporan komprehensif</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3 class="feature-title">Keamanan Data</h3>
-                    <p class="feature-desc">Sistem keamanan berlapis untuk melindungi data sensitif</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3 class="feature-title">Mobile Friendly</h3>
-                    <p class="feature-desc">Akses sistem kapan saja, dimana saja melalui berbagai perangkat</p>
+            <div class="menu-title">Menu Surat</div>
+            
+            <a href="#" class="menu-item">
+                <span class="menu-icon">📨</span>
+                <span>Surat Masuk</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon">📤</span>
+                <span>Surat Keluar</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon">📋</span>
+                <span>History</span>
+            </a>
+
+            <div class="menu-title">Lainnya</div>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon">📊</span>
+                <span>Laporan</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon">⚙️</span>
+                <span>Pengaturan</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div>
+                    <div style="font-weight: 600;">Admin User</div>
+                    <div style="font-size: 0.85rem; opacity: 0.8;">Administrator</div>
                 </div>
             </div>
         </div>
-    </section>
+    </aside>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navbar -->
+        <nav class="top-navbar">
+            <h1 class="page-title">Dashboard</h1>
+            <div class="top-nav-actions">
+                <button class="notification-btn">
+                    🔔
+                    <span class="notification-badge"></span>
+                </button>
+                <button class="upload-btn">
+                    <span>📄</span>
+                    Upload File
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Stats Cards -->
             <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">1,250+</div>
-                    <div class="stat-label">Surat Terproses</div>
+                <div class="stat-card">
+                    <div class="stat-icon blue">📨</div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>Surat Masuk Baru</p>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Pengguna Aktif</div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">✅</div>
+                    <div class="stat-info">
+                        <h3>156</h3>
+                        <p>Surat Diproses</p>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Kepuasan Pengguna</div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">⏳</div>
+                    <div class="stat-info">
+                        <h3>8</h3>
+                        <p>Menunggu Disposisi</p>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Akses Online</div>
+
+                <div class="stat-card">
+                    <div class="stat-icon red">📤</div>
+                    <div class="stat-info">
+                        <h3>42</h3>
+                        <p>Surat Keluar</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Aksi Cepat</h2>
+                </div>
+                <div class="quick-actions">
+                    <button class="quick-action-btn">
+                        <span class="quick-action-icon">➕</span>
+                        <span class="quick-action-text">Surat Baru</span>
+                    </button>
+                    <button class="quick-action-btn">
+                        <span class="quick-action-icon">✍️</span>
+                        <span class="quick-action-text">Disposisi</span>
+                    </button>
+                    <button class="quick-action-btn">
+                        <span class="quick-action-icon">🔍</span>
+                        <span class="quick-action-text">Cari Surat</span>
+                    </button>
+                    <button class="quick-action-btn">
+                        <span class="quick-action-icon">📊</span>
+                        <span class="quick-action-text">Laporan</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pending User Registration -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">⚠️ Pendaftaran User Menunggu Persetujuan</h2>
+                    <span style="background: #fef3c7; color: #d97706; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">3 Pending</span>
+                </div>
+
+                <div class="user-approval-item">
+                    <div class="user-approval-avatar">👤</div>
+                    <div class="user-approval-info">
+                        <div class="user-approval-name">Ahmad Fauzi</div>
+                        <div class="user-approval-details">
+                            <span>📧 ahmad.fauzi@student.smkn2.sch.id</span>
+                            <span>📱 081234567890</span>
+                            <span>👥 Siswa - XII RPL 1</span>
+                        </div>
+                        <div class="user-approval-time">Mendaftar 10 menit yang lalu</div>
+                    </div>
+                    <div class="user-approval-actions">
+                        <button class="btn-approve">✅ Setujui</button>
+                        <button class="btn-reject">❌ Tolak</button>
+                    </div>
+                </div>
+
+                <div class="user-approval-item">
+                    <div class="user-approval-avatar">👤</div>
+                    <div class="user-approval-info">
+                        <div class="user-approval-name">Siti Nurhaliza</div>
+                        <div class="user-approval-details">
+                            <span>📧 siti.nurhaliza@teacher.smkn2.sch.id</span>
+                            <span>📱 082345678901</span>
+                            <span>👥 Guru - Bahasa Indonesia</span>
+                        </div>
+                        <div class="user-approval-time">Mendaftar 1 jam yang lalu</div>
+                    </div>
+                    <div class="user-approval-actions">
+                        <button class="btn-approve">✅ Setujui</button>
+                        <button class="btn-reject">❌ Tolak</button>
+                    </div>
+                </div>
+
+                <div class="user-approval-item">
+                    <div class="user-approval-avatar">👤</div>
+                    <div class="user-approval-info">
+                        <div class="user-approval-name">Budi Santoso</div>
+                        <div class="user-approval-details">
+                            <span>📧 budi.santoso@student.smkn2.sch.id</span>
+                            <span>📱 083456789012</span>
+                            <span>👥 Siswa - XI TKJ 2</span>
+                        </div>
+                        <div class="user-approval-time">Mendaftar 3 jam yang lalu</div>
+                    </div>
+                    <div class="user-approval-actions">
+                        <button class="btn-approve">✅ Setujui</button>
+                        <button class="btn-reject">❌ Tolak</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Aktivitas Terbaru</h2>
+                    <a href="#" class="view-all-btn">Lihat Semua →</a>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">📨</div>
+                    <div class="activity-info">
+                        <div class="activity-title">Surat Undangan Rapat dari Kepala Sekolah</div>
+                        <div class="activity-time">5 menit yang lalu</div>
+                    </div>
+                    <span class="status-badge pending">Pending</span>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">✅</div>
+                    <div class="activity-info">
+                        <div class="activity-title">Surat Permohonan Izin telah disetujui</div>
+                        <div class="activity-time">1 jam yang lalu</div>
+                    </div>
+                    <span class="status-badge approved">Disetujui</span>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">📤</div>
+                    <div class="activity-info">
+                        <div class="activity-title">Surat Pemberitahuan telah dikirim</div>
+                        <div class="activity-time">2 jam yang lalu</div>
+                    </div>
+                    <span class="status-badge approved">Terkirim</span>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">❌</div>
+                    <div class="activity-info">
+                        <div class="activity-title">Surat Pengajuan Dana ditolak</div>
+                        <div class="activity-time">3 jam yang lalu</div>
+                    </div>
+                    <span class="status-badge rejected">Ditolak</span>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">📋</div>
+                    <div class="activity-info">
+                        <div class="activity-title">Disposisi ke Wakasek Kurikulum</div>
+                        <div class="activity-time">5 jam yang lalu</div>
+                    </div>
+                    <span class="status-badge approved">Selesai</span>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2025 SMKN 2 Singosari. Sistem Disposisi Surat Digital.</p>
-            <p style="margin-top: 0.5rem; opacity: 0.8;">Jl. Raya Singosari, Malang, Jawa Timur</p>
-        </div>
-    </footer>
+    </main>
 
     <script>
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+        // Add smooth transitions
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
             });
         });
 
-        // Animate stats on scroll
-        const observerOptions = {
-            threshold: 0.5,
-            rootMargin: '0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeIn 0.8s ease-out';
+        // User Approval Actions
+        document.querySelectorAll('.btn-approve').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const userName = this.closest('.user-approval-item').querySelector('.user-approval-name').textContent;
+                if (confirm(`Apakah Anda yakin ingin menyetujui pendaftaran ${userName}?`)) {
+                    alert(`✅ Pendaftaran ${userName} telah disetujui!`);
+                    this.closest('.user-approval-item').style.opacity = '0.5';
+                    setTimeout(() => {
+                        this.closest('.user-approval-item').remove();
+                        // Update badge count
+                        const badge = document.querySelector('.section-header span');
+                        const currentCount = parseInt(badge.textContent.match(/\d+/)[0]);
+                        badge.textContent = `${currentCount - 1} Pending`;
+                    }, 500);
                 }
             });
-        }, observerOptions);
-
-        document.querySelectorAll('.feature-card, .stat-item').forEach(el => {
-            observer.observe(el);
         });
+
+        document.querySelectorAll('.btn-reject').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const userName = this.closest('.user-approval-item').querySelector('.user-approval-name').textContent;
+                const reason = prompt(`Alasan menolak pendaftaran ${userName}:`);
+                if (reason) {
+                    alert(`❌ Pendaftaran ${userName} telah ditolak!\nAlasan: ${reason}`);
+                    this.closest('.user-approval-item').style.opacity = '0.5';
+                    setTimeout(() => {
+                        this.closest('.user-approval-item').remove();
+                        // Update badge count
+                        const badge = document.querySelector('.section-header span');
+                        const currentCount = parseInt(badge.textContent.match(/\d+/)[0]);
+                        badge.textContent = `${currentCount - 1} Pending`;
+                    }, 500);
+                }
+            });
+        });
+
+        // Animate stats on load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.stat-card').forEach((card, index) => {
+                card.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s backwards`;
+            });
+        });
+
+        // Add animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
