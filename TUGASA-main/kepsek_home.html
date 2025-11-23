@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kepala Sekolah - SMKN 2 Singosari</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-sidebar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .school-name-sidebar {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .menu-section {
+            padding: 1rem 0;
+        }
+
+        .menu-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .menu-item {
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: #fff;
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: #fff;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(239, 68, 68, 0.2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hamburger-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #f0f2f5;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .top-nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .notification-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .notification-btn:hover {
+            background: #e2e8f0;
+            transform: scale(1.05);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            font-size: 1.05rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .stat-icon.red {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-info p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        /* Section */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #2d3748;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .urgent-badge {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .view-all-btn {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .view-all-btn:hover {
+            color: #764ba2;
+        }
+
+        /* Approval Item */
+        .approval-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #f0f2f5;
+            margin-bottom: 1rem;
+            background: #fafafa;
+        }
+
+        .approval-item:hover {
+            border-color: #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .approval-item.urgent {
+            border-color: #fecaca;
+            background: #fef2f2;
+        }
+
+        .approval-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .approval-info {
+            flex: 1;
+        }
+
+        .approval-title {
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .approval-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 0.5rem;
+        }
+
+        .approval-description {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 0.8rem;
+        }
+
+        .approval-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-approve,
+        .btn-reject,
+        .btn-detail {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-reject {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-reject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-detail {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-detail:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .priority-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .priority-badge.tinggi {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-badge.sedang {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-badge.rendah {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger-btn {
+                display: flex;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content-area {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-banner h2 {
+                font-size: 1.4rem;
+            }
+
+            .approval-meta {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+
+            .approval-actions {
+                flex-direction: column;
+            }
+
+            .btn-approve,
+            .btn-reject,
+            .btn-detail {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-sidebar">🏫</div>
+            <div class="school-name-sidebar">SMKN 2 SINGOSARI</div>
+        </div>
+
+        <nav class="menu-section">
+            <a href="kepsek-home.html" class="menu-item active">
+                <span class="menu-icon">🏠</span>
+                <span>Home</span>
+            </a>
+
+            <div class="menu-title">Menu Utama</div>
+            
+            <a href="kepsek-surat-masuk.html" class="menu-item">
+                <span class="menu-icon">📨</span>
+                <span>Surat Masuk</span>
+            </a>
+
+            <a href="kepsek-approval.html" class="menu-item">
+                <span class="menu-icon">✅</span>
+                <span>Approval Surat</span>
+            </a>
+
+            <a href="kepsek-history.html" class="menu-item">
+                <span class="menu-icon">📋</span>
+                <span>History</span>
+            </a>
+
+            <div class="menu-title">Lainnya</div>
+
+            <a href="kepsek-laporan.html" class="menu-item">
+                <span class="menu-icon">📊</span>
+                <span>Laporan</span>
+            </a>
+
+            <a href="kepsek-profil.html" class="menu-item">
+                <span class="menu-icon">⚙️</span>
+                <span>Pengaturan</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👔</div>
+                <div>
+                    <div style="font-weight: 600;">Dr. Suhartono, M.Pd</div>
+                    <div style="font-size: 0.85rem; opacity: 0.8;">Kepala Sekolah</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Top Navbar -->
+        <nav class="top-navbar">
+            <div class="nav-left">
+                <button class="hamburger-btn" id="hamburgerBtn">☰</button>
+                <h1 class="page-title">Dashboard Kepala Sekolah</h1>
+            </div>
+            <div class="top-nav-actions">
+                <button class="notification-btn">
+                    🔔
+                    <span class="notification-badge">8</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <h2>Selamat Datang, Dr. Suhartono! 👔</h2>
+                <p>Anda memiliki 8 surat yang menunggu approval</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card" onclick="window.location.href='kepsek-approval.html'">
+                    <div class="stat-icon orange">⏳</div>
+                    <div class="stat-info">
+                        <h3>8</h3>
+                        <p>Menunggu Approval</p>
+                    </div>
+                </div>
+
+                <div class="stat-card" onclick="window.location.href='kepsek-history.html?status=approved'">
+                    <div class="stat-icon green">✅</div>
+                    <div class="stat-info">
+                        <h3>156</h3>
+                        <p>Surat Disetujui</p>
+                    </div>
+                </div>
+
+                <div class="stat-card" onclick="window.location.href='kepsek-history.html?status=rejected'">
+                    <div class="stat-icon red">❌</div>
+                    <div class="stat-info">
+                        <h3>12</h3>
+                        <p>Surat Ditolak</p>
+                    </div>
+                </div>
+
+                <div class="stat-card" onclick="window.location.href='kepsek-surat-masuk.html'">
+                    <div class="stat-icon blue">📨</div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>Surat Masuk Baru</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Urgent Approval -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        🔥 Surat Urgent - Perlu Approval Segera
+                        <span class="urgent-badge">3 Urgent</span>
+                    </h2>
+                    <a href="kepsek-approval.html" class="view-all-btn">Lihat Semua →</a>
+                </div>
+
+                <div class="approval-item urgent">
+                    <div class="approval-icon">📄</div>
+                    <div class="approval-info">
+                        <div class="approval-title">Permohonan Dana Kegiatan PKL - XII RPL</div>
+                        <div class="approval-meta">
+                            <span>📅 23 Nov 2025</span>
+                            <span>👤 Ketua Jurusan RPL</span>
+                            <span class="priority-badge tinggi">Prioritas Tinggi</span>
+                        </div>
+                        <div class="approval-description">
+                            Permohonan dana untuk kegiatan Praktek Kerja Lapangan siswa kelas XII RPL ke 5 perusahaan mitra. Total anggaran Rp 25.000.000.
+                        </div>
+                        <div class="approval-actions">
+                            <button class="btn-detail" onclick="window.location.href='kepsek-surat-detail.html?id=1'">📋 Lihat Detail</button>
+                            <button class="btn-approve" onclick="approveSurat(1)">✅ Setujui</button>
+                            <button class="btn-reject" onclick="rejectSurat(1)">❌ Tolak</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="approval-item urgent">
+                    <div class="approval-icon">📄</div>
+                    <div class="approval-info">
+                        <div class="approval-title">Pengajuan Izin Kegiatan Lomba LKS Tingkat Nasional</div>
+                        <div class="approval-meta">
+                            <span>📅 23 Nov 2025</span>
+                            <span>👤 Pembina LKS</span>
+                            <span class="priority-badge tinggi">Prioritas Tinggi</span>
+                        </div>
+                        <div class="approval-description">
+                            Pengajuan izin untuk 4 siswa mengikuti Lomba Kompetensi Siswa tingkat Nasional di Jakarta, 1-5 Desember 2025.
+                        </div>
+                        <div class="approval-actions">
+                            <button class="btn-detail" onclick="window.location.href='kepsek-surat-detail.html?id=2'">📋 Lihat Detail</button>
+                            <button class="btn-approve" onclick="approveSurat(2)">✅ Setujui</button>
+                            <button class="btn-reject" onclick="rejectSurat(2)">❌ Tolak</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="approval-item urgent">
+                    <div class="approval-icon">📄</div>
+                    <div class="approval-info">
+                        <div class="approval-title">Permohonan Izin Prakerin - 30 Siswa XII TKJ</div>
+                        <div class="approval-meta">
+                            <span>📅 22 Nov 2025</span>
+                            <span>👤 Wali Kelas XII TKJ</span>
+                            <span class="priority-badge tinggi">Prioritas Tinggi</span>
+                        </div>
+                        <div class="approval-description">
+                            Permohonan izin prakerin untuk 30 siswa kelas XII TKJ ke berbagai perusahaan IT, periode Januari-Maret 2026.
+                        </div>
+                        <div class="approval-actions">
+                            <button class="btn-detail" onclick="window.location.href='kepsek-surat-detail.html?id=3'">📋 Lihat Detail</button>
+                            <button class="btn-approve" onclick="approveSurat(3)">✅ Setujui</button>
+                            <button class="btn-reject" onclick="rejectSurat(3)">❌ Tolak</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Approvals -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Surat Menunggu Approval</h2>
+                    <a href="kepsek-approval.html" class="view-all-btn">Lihat Semua →</a>
+                </div>
+
+                <div class="approval-item">
+                    <div class="approval-icon">📄</div>
+                    <div class="approval-info">
+                        <div class="approval-title">Permohonan Surat Keterangan Siswa - Ahmad Fauzi</div>
+                        <div class="approval-meta">
+                            <span>📅 22 Nov 2025</span>
+                            <span>👤 Ahmad Fauzi - XII RPL 1</span>
+                            <span class="priority-badge sedang">Prioritas Sedang</span>
+                        </div>
+                        <div class="approval-description">
+                            Permohonan surat keterangan siswa aktif untuk keperluan pendaftaran lomba coding tingkat provinsi.
+                        </div>
+                        <div class="approval-actions">
+                            <button class="btn-detail" onclick="window.location.href='kepsek-surat-detail.html?id=4'">📋 Lihat Detail</button>
+                            <button class="btn-approve" onclick="approveSurat(4)">✅ Setujui</button>
+                            <button class="btn-reject" onclick="rejectSurat(4)">❌ Tolak</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="approval-item">
+                    <div class="approval-icon">📄</div>
+                    <div class="approval-info">
+                        <div class="approval-title">Permohonan Izin Kegiatan Study Tour - XI MM</div>
+                        <div class="approval-meta">
+                            <span>📅 21 Nov 2025</span>
+                            <span>👤 Wali Kelas XI MM</span>
+                            <span class="priority-badge sedang">Prioritas Sedang</span>
+                        </div>
+                        <div class="approval-description">
+                            Pengajuan izin kegiatan study tour kelas XI Multimedia ke Bali untuk pembelajaran fotografi dan videografi.
+                        </div>
+                        <div class="approval-actions">
+                            <button class="btn-detail" onclick="window.location.href='kepsek-surat-detail.html?id=5'">📋 Lihat Detail</button>
+                            <button class="btn-approve" onclick="approveSurat(5)">✅ Setujui</button>
+                            <button class="btn-reject" onclick="rejectSurat(5)">❌ Tolak</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle Sidebar
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebar = document.getElementById('sidebar');
+
+        hamburgerBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                    sidebar.classList.remove('show');
+                }
+            }
+        });
+
+        // Approve Surat
+        function approveSurat(id) {
+            const modal = confirm('Apakah Anda yakin ingin menyetujui surat ini?');
+            if (modal) {
+                // Redirect ke halaman detail dengan form approval
+                window.location.href = `kepsek-approve-form.html?id=${id}`;
+            }
+        }
+
+        // Reject Surat
+        function rejectSurat(id) {
+            const reason = prompt('Masukkan alasan penolakan:');
+            if (reason) {
+                alert(`Surat telah ditolak dengan alasan: ${reason}`);
+                // Di sini nanti akan ada API call untuk update status
+                location.reload();
+            }
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

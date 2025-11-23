@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SMKN 2 Singosari</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('images/inorasiv.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+            z-index: 1;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            color: #2d3748;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            outline: none;
+            background: white;
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.2rem;
+            user-select: none;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #4a5568;
+        }
+
+        .remember-me input {
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #764ba2;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #718096;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .register-link {
+            text-align: center;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .register-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: #764ba2;
+        }
+
+        .alert {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 1rem;
+            }
+
+            .login-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="logo">🏫</div>
+                <h1 class="login-title">Selamat Datang</h1>
+                <p class="login-subtitle">Login ke Sistem Disposisi Surat</p>
+            </div>
+
+            <div id="alertBox" class="alert"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">NIP</label>
+                    <input type="text" class="form-input" id="nip" placeholder="Masukkan NIP" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-input" id="password" placeholder="Masukkan Password" required>
+                        <span class="toggle-password" id="togglePassword">👁️</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-select" id="role" required>
+                        <option value="">Pilih Role</option>
+                        <option value="user">User (Siswa/Guru)</option>
+                        <option value="tu">Tata Usaha (TU)</option>
+                        <option value="kepsek">Kepala Sekolah</option>
+                    </select>
+                </div>
+
+                <div class="remember-forgot">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Ingat Saya</span>
+                    </label>
+                    <a href="#" class="forgot-password">Lupa Password?</a>
+                </div>
+
+                <button type="submit" class="btn-login">🔐 Login</button>
+            </form>
+
+            <div class="divider">
+                <span>atau</span>
+            </div>
+
+            <div class="register-link">
+                Belum punya akun? <a href="daftar.html">Daftar Sekarang</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Password Visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // Form Submission
+        const loginForm = document.getElementById('loginForm');
+        const alertBox = document.getElementById('alertBox');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nip = document.getElementById('nip').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+
+            // Validasi
+            if (!nip || !password || !role) {
+                showAlert('Semua field harus diisi!', 'error');
+                return;
+            }
+
+            // Simulasi login (ganti dengan API call nanti)
+            // Demo credentials:
+            // User: NIP=123456, Pass=user123, Role=user
+            // TU: NIP=111111, Pass=tu123, Role=tu
+            // Kepsek: NIP=999999, Pass=kepsek123, Role=kepsek
+
+            if (nip === '123456' && password === 'user123' && role === 'user') {
+                showAlert('Login berhasil! Mengarahkan ke dashboard user...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'user-home.html';
+                }, 1500);
+            } else if (nip === '111111' && password === 'tu123' && role === 'tu') {
+                showAlert('Login berhasil! Mengarahkan ke dashboard TU...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1500);
+            } else if (nip === '999999' && password === 'kepsek123' && role === 'kepsek') {
+                showAlert('Login berhasil! Mengarahkan ke dashboard Kepala Sekolah...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'kepsek-home.html';
+                }, 1500);
+            } else {
+                showAlert('NIP, Password, atau Role tidak sesuai!', 'error');
+            }
+        });
+
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = 'alert alert-' + type;
+            alertBox.style.display = 'block';
+
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

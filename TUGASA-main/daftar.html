@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - SMKN 2 Singosari</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('images/inorasiv.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+            z-index: 1;
+        }
+
+        .register-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 550px;
+            padding: 2rem;
+        }
+
+        .register-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .register-title {
+            font-size: 1.8rem;
+            color: #2d3748;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-subtitle {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-select {
+            background: white;
+            cursor: pointer;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.2rem;
+            user-select: none;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .terms-checkbox input {
+            margin-top: 0.2rem;
+            cursor: pointer;
+        }
+
+        .terms-checkbox a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .terms-checkbox a:hover {
+            color: #764ba2;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .btn-register:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #718096;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-link {
+            text-align: center;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #764ba2;
+        }
+
+        .alert {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: #e2e8f0;
+            margin-top: 0.3rem;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            width: 0%;
+        }
+
+        .strength-weak .strength-fill {
+            width: 33%;
+            background: #ef4444;
+        }
+
+        .strength-medium .strength-fill {
+            width: 66%;
+            background: #f59e0b;
+        }
+
+        .strength-strong .strength-fill {
+            width: 100%;
+            background: #10b981;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 1rem;
+            }
+
+            .register-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .register-title {
+                font-size: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="logo-section">
+                <div class="logo">🏫</div>
+                <h1 class="register-title">Buat Akun Baru</h1>
+                <p class="register-subtitle">Daftar untuk menggunakan Sistem Disposisi Surat</p>
+            </div>
+
+            <div id="alertBox" class="alert"></div>
+
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Nama Depan</label>
+                        <input type="text" class="form-input" id="firstName" placeholder="Nama Depan" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nama Belakang</label>
+                        <input type="text" class="form-input" id="lastName" placeholder="Nama Belakang" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">NIP</label>
+                    <input type="text" class="form-input" id="nip" placeholder="Nomor Induk Pegawai/Siswa" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="email" placeholder="nama@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nomor Telepon</label>
+                    <input type="tel" class="form-input" id="phone" placeholder="08xxxxxxxxxx" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-select" id="role" required>
+                        <option value="">Pilih Role</option>
+                        <option value="user">User (Siswa/Guru)</option>
+                        <option value="tu">Tata Usaha (TU)</option>
+                        <option value="kepsek">Kepala Sekolah</option>
+                    </select>
+                </div>
+
+                <div id="userTypeGroup" class="form-group" style="display: none;">
+                    <label class="form-label">Tipe User</label>
+                    <select class="form-select" id="userType">
+                        <option value="">Pilih Tipe</option>
+                        <option value="siswa">Siswa</option>
+                        <option value="guru">Guru</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+
+                <div id="classGroup" class="form-group" style="display: none;">
+                    <label class="form-label">Kelas/Jurusan</label>
+                    <input type="text" class="form-input" id="class" placeholder="Contoh: XII RPL 1">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-input" id="password" placeholder="Minimal 8 karakter" required>
+                        <span class="toggle-password" id="togglePassword">👁️</span>
+                    </div>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar">
+                            <div class="strength-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Konfirmasi Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-input" id="confirmPassword" placeholder="Ulangi password" required>
+                        <span class="toggle-password" id="toggleConfirmPassword">👁️</span>
+                    </div>
+                </div>
+
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">
+                        Saya setuju dengan <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-register" id="btnRegister">📝 Daftar Sekarang</button>
+            </form>
+
+            <div class="divider">
+                <span>atau</span>
+            </div>
+
+            <div class="login-link">
+                Sudah punya akun? <a href="login.html">Login Sekarang</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Password Visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // Password Strength
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthDiv.className = 'password-strength';
+                return;
+            }
+
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+            if (strength <= 1) {
+                strengthDiv.className = 'password-strength strength-weak';
+            } else if (strength <= 3) {
+                strengthDiv.className = 'password-strength strength-medium';
+            } else {
+                strengthDiv.className = 'password-strength strength-strong';
+            }
+        });
+
+        // Show/Hide User Type based on Role
+        const roleSelect = document.getElementById('role');
+        const userTypeGroup = document.getElementById('userTypeGroup');
+        const classGroup = document.getElementById('classGroup');
+        const userTypeSelect = document.getElementById('userType');
+
+        roleSelect.addEventListener('change', function() {
+            if (this.value === 'user') {
+                userTypeGroup.style.display = 'block';
+            } else {
+                userTypeGroup.style.display = 'none';
+                classGroup.style.display = 'none';
+            }
+        });
+
+        userTypeSelect.addEventListener('change', function() {
+            if (this.value === 'siswa') {
+                classGroup.style.display = 'block';
+            } else {
+                classGroup.style.display = 'none';
+            }
+        });
+
+        // Form Submission
+        const registerForm = document.getElementById('registerForm');
+        const alertBox = document.getElementById('alertBox');
+        const btnRegister = document.getElementById('btnRegister');
+
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const nip = document.getElementById('nip').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const role = document.getElementById('role').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+
+            // Validasi
+            if (!firstName || !lastName || !nip || !email || !phone || !role || !password || !confirmPassword) {
+                showAlert('Semua field harus diisi!', 'error');
+                return;
+            }
+
+            if (password.length < 8) {
+                showAlert('Password minimal 8 karakter!', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert('Password dan Konfirmasi Password tidak sama!', 'error');
+                return;
+            }
+
+            if (!agreeTerms) {
+                showAlert('Anda harus menyetujui Syarat & Ketentuan!', 'error');
+                return;
+            }
+
+            // Validasi email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('Format email tidak valid!', 'error');
+                return;
+            }
+
+            // Validasi phone format
+            const phoneRegex = /^[0-9]{10,13}$/;
+            if (!phoneRegex.test(phone)) {
+                showAlert('Format nomor telepon tidak valid!', 'error');
+                return;
+            }
+
+            // Simulasi registrasi (ganti dengan API call nanti)
+            btnRegister.disabled = true;
+            btnRegister.textContent = '⏳ Mendaftar...';
+
+            setTimeout(() => {
+                showAlert('Pendaftaran berhasil! Menunggu persetujuan dari Tata Usaha...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }, 1500);
+        });
+
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = 'alert alert-' + type;
+            alertBox.style.display = 'block';
+
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
