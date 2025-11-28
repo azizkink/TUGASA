@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Masuk - SMKN 2 Singosari</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-sidebar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .school-name-sidebar {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .menu-section {
+            padding: 1rem 0;
+        }
+
+        .menu-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .menu-item {
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: #fff;
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: #fff;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hamburger-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #f0f2f5;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .top-nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            background: #f0f2f5;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .notification-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .notification-btn:hover {
+            background: #e2e8f0;
+            transform: scale(1.05);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-item label {
+            font-size: 0.85rem;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .filter-item select,
+        .filter-item input {
+            padding: 0.6rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-item select:focus,
+        .filter-item input:focus {
+            border-color: #667eea;
+        }
+
+        .btn-filter {
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Table Section */
+        .table-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid #f0f2f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.2rem;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .btn-add {
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #2d3748;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f2f5;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.baru {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-badge.proses {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-badge.selesai {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .priority-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .priority-badge.tinggi {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-badge.sedang {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-badge.rendah {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .btn-view:hover {
+            background: #bfdbfe;
+        }
+
+        .btn-disposition {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .btn-disposition:hover {
+            background: #fde68a;
+        }
+
+        .btn-delete {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-delete:hover {
+            background: #fecaca;
+        }
+
+        /* Pagination */
+        .pagination {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid #f0f2f5;
+        }
+
+        .pagination-info {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .page-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger-btn {
+                display: flex;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .filter-section {
+                flex-direction: column;
+            }
+
+            .filter-item {
+                width: 100%;
+            }
+
+            .table-container {
+                overflow-x: scroll;
+            }
+
+            .content-area {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-sidebar">🏫</div>
+            <div class="school-name-sidebar">SMKN 2 SINGOSARI</div>
+        </div>
+
+        <nav class="menu-section">
+            <a href="home.html" class="menu-item">
+                <span class="menu-icon">🏠</span>
+                <span>Home</span>
+            </a>
+
+            <div class="menu-title">Menu Surat</div>
+            
+            <a href="surat-masuk.html" class="menu-item active">
+                <span class="menu-icon">📨</span>
+                <span>Surat Masuk</span>
+            </a>
+
+            <a href="surat-keluar.html" class="menu-item">
+                <span class="menu-icon">📤</span>
+                <span>Surat Keluar</span>
+            </a>
+
+            <a href="history.html" class="menu-item">
+                <span class="menu-icon">📋</span>
+                <span>History</span>
+            </a>
+
+            <div class="menu-title">Lainnya</div>
+
+            <a href="laporan.html" class="menu-item">
+                <span class="menu-icon">📊</span>
+                <span>Laporan</span>
+            </a>
+
+            <a href="pengaturan.html" class="menu-item">
+                <span class="menu-icon">⚙️</span>
+                <span>Pengaturan</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div>
+                    <div style="font-weight: 600;">Admin User</div>
+                    <div style="font-size: 0.85rem; opacity: 0.8;">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Top Navbar -->
+        <nav class="top-navbar">
+            <div class="nav-left">
+                <button class="hamburger-btn" id="hamburgerBtn">☰</button>
+                <h1 class="page-title">Surat Masuk</h1>
+            </div>
+            <div class="top-nav-actions">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Cari surat...">
+                </div>
+                <button class="notification-btn">
+                    🔔
+                    <span class="notification-badge"></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-item">
+                    <label>Status</label>
+                    <select>
+                        <option value="">Semua Status</option>
+                        <option value="baru">Baru</option>
+                        <option value="proses">Diproses</option>
+                        <option value="selesai">Selesai</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label>Prioritas</label>
+                    <select>
+                        <option value="">Semua Prioritas</option>
+                        <option value="tinggi">Tinggi</option>
+                        <option value="sedang">Sedang</option>
+                        <option value="rendah">Rendah</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label>Dari Tanggal</label>
+                    <input type="date">
+                </div>
+
+                <div class="filter-item">
+                    <label>Sampai Tanggal</label>
+                    <input type="date">
+                </div>
+
+                <button class="btn-filter">🔍 Filter</button>
+            </div>
+
+            <!-- Table Section -->
+            <div class="table-section">
+                <div class="table-header">
+                    <h2 class="table-title">Daftar Surat Masuk</h2>
+                    <button class="btn-add">➕ Tambah Surat</button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No. Surat</th>
+                                <th>Pengirim</th>
+                                <th>Perihal</th>
+                                <th>Tanggal</th>
+                                <th>Prioritas</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>001/SM/XI/2025</td>
+                                <td>Dinas Pendidikan</td>
+                                <td>Undangan Rapat Koordinasi</td>
+                                <td>23 Nov 2025</td>
+                                <td><span class="priority-badge tinggi">Tinggi</span></td>
+                                <td><span class="status-badge baru">Baru</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view">👁️ Lihat</button>
+                                        <button class="btn-action btn-disposition">✍️ Disposisi</button>
+                                        <button class="btn-action btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>002/SM/XI/2025</td>
+                                <td>Kepala Sekolah</td>
+                                <td>Permohonan Izin Kegiatan</td>
+                                <td>22 Nov 2025</td>
+                                <td><span class="priority-badge sedang">Sedang</span></td>
+                                <td><span class="status-badge proses">Diproses</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view">👁️ Lihat</button>
+                                        <button class="btn-action btn-disposition">✍️ Disposisi</button>
+                                        <button class="btn-action btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>003/SM/XI/2025</td>
+                                <td>Waka Kurikulum</td>
+                                <td>Laporan Kegiatan Semester</td>
+                                <td>21 Nov 2025</td>
+                                <td><span class="priority-badge rendah">Rendah</span></td>
+                                <td><span class="status-badge selesai">Selesai</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view">👁️ Lihat</button>
+                                        <button class="btn-action btn-disposition">✍️ Disposisi</button>
+                                        <button class="btn-action btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>004/SM/XI/2025</td>
+                                <td>Komite Sekolah</td>
+                                <td>Pengajuan Dana Kegiatan</td>
+                                <td>20 Nov 2025</td>
+                                <td><span class="priority-badge tinggi">Tinggi</span></td>
+                                <td><span class="status-badge baru">Baru</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view">👁️ Lihat</button>
+                                        <button class="btn-action btn-disposition">✍️ Disposisi</button>
+                                        <button class="btn-action btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>005/SM/XI/2025</td>
+                                <td>BKK</td>
+                                <td>Pemberitahuan Job Fair</td>
+                                <td>19 Nov 2025</td>
+                                <td><span class="priority-badge sedang">Sedang</span></td>
+                                <td><span class="status-badge proses">Diproses</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view">👁️ Lihat</button>
+                                        <button class="btn-action btn-disposition">✍️ Disposisi</button>
+                                        <button class="btn-action btn-delete">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <div class="pagination-info">
+                        Menampilkan 1-5 dari 24 surat
+                    </div>
+                    <div class="pagination-buttons">
+                        <button class="page-btn">❮ Prev</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn">Next ❯</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle Sidebar
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        hamburgerBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                    sidebar.classList.remove('show');
+                }
+            }
+        });
+
+        // Table row click
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', function(e) {
+                if (!e.target.closest('.btn-action')) {
+                    console.log('Row clicked');
+                }
+            });
+        });
+
+        // Action buttons
+        document.querySelectorAll('.btn-view').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                alert('Menampilkan detail surat');
+            });
+        });
+
+        document.querySelectorAll('.btn-disposition').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                alert('Form disposisi surat');
+            });
+        });
+
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm('Apakah Anda yakin ingin menghapus surat ini?')) {
+                    alert('Surat dihapus');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
