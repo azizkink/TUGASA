@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SMKN 2 Singosari</title>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,27 +14,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: url('images/inorasiv.jpg');
+
+            /* SAMA DENGAN FILE DAFTAR */
+            background: url('images/cover.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+
             position: relative;
+            padding: 2rem 0;
         }
 
+        /* Gradient overlay */
         body::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+            inset: 0;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(2px);
             z-index: 1;
         }
 
+        /* MASKOT KIRI & KANAN */
+        .maskot-left {
+            position: absolute;
+            top: 50%;
+            left: 3%;
+            transform: translateY(-50%);
+            width: 170px;
+            z-index: 2;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .maskot-right {
+            position: absolute;
+            top: 50%;
+            right: 3%;
+            transform: translateY(-50%);
+            width: 170px;
+            z-index: 2;
+            animation: float 3s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%,100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(calc(-50% - 10px)); }
+        }
+
+        /* CARD LOGIN */
         .login-container {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             width: 100%;
             max-width: 450px;
             padding: 2rem;
@@ -47,19 +74,13 @@
             background: white;
             border-radius: 20px;
             padding: 3rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
             animation: slideUp 0.6s ease-out;
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .logo-section {
@@ -68,14 +89,14 @@
         }
 
         .logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 18px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            border: 3px solid #667eea;
             margin-bottom: 1rem;
         }
 
@@ -91,9 +112,7 @@
             font-size: 0.95rem;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+        .form-group { margin-bottom: 1.2rem; }
 
         .form-label {
             display: block;
@@ -103,41 +122,24 @@
             font-size: 0.9rem;
         }
 
-        .form-input {
-            width: 100%;
-            padding: 0.9rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .form-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
+        .form-input,
         .form-select {
             width: 100%;
-            padding: 0.9rem 1rem;
+            padding: 0.85rem 1rem;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            outline: none;
-            background: white;
-            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.3s ease;
         }
 
+        .form-input:focus,
         .form-select:focus {
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+            outline: none;
         }
 
-        .password-wrapper {
-            position: relative;
-        }
+        .password-wrapper { position: relative; }
 
         .toggle-password {
             position: absolute;
@@ -153,26 +155,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.3rem;
             font-size: 0.9rem;
         }
 
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #4a5568;
-        }
-
-        .remember-me input {
-            cursor: pointer;
-        }
+        .remember-me { display: flex; gap: 0.5rem; color: #4a5568; }
 
         .forgot-password {
             color: #667eea;
-            text-decoration: none;
             font-weight: 500;
-            transition: all 0.3s ease;
+            text-decoration: none;
         }
 
         .forgot-password:hover {
@@ -189,22 +181,18 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s ease;
             margin-bottom: 1.5rem;
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-login:active {
-            transform: translateY(0);
+            box-shadow: 0 10px 25px rgba(102,126,234,0.4);
         }
 
         .divider {
             text-align: center;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
             position: relative;
         }
 
@@ -216,7 +204,6 @@
             right: 0;
             height: 1px;
             background: #e2e8f0;
-            z-index: 1;
         }
 
         .divider span {
@@ -225,7 +212,6 @@
             color: #718096;
             font-size: 0.85rem;
             position: relative;
-            z-index: 2;
         }
 
         .register-link {
@@ -236,57 +222,47 @@
 
         .register-link a {
             color: #667eea;
-            text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
+            text-decoration: none;
         }
 
-        .register-link a:hover {
-            color: #764ba2;
-        }
+        .register-link a:hover { color: #764ba2; }
 
         .alert {
+            display: none;
             padding: 0.8rem 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
             font-size: 0.9rem;
-            display: none;
         }
 
-        .alert-error {
-            background: #fee2e2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-        }
+        .alert-error { background: #fee2e2; color: #dc2626; }
+        .alert-success { background: #d1fae5; color: #059669; }
 
-        .alert-success {
-            background: #d1fae5;
-            color: #059669;
-            border: 1px solid #a7f3d0;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .login-container {
-                padding: 1rem;
+            .maskot-left, .maskot-right {
+                width: 120px;
+                opacity: 0.7;
             }
 
-            .login-card {
-                padding: 2rem 1.5rem;
-            }
-
-            .login-title {
-                font-size: 1.5rem;
-            }
+            .login-card { padding: 2rem 1.5rem; }
         }
     </style>
 </head>
+
 <body>
+
+    <!-- MASKOT KIRI -->
+    <img src="images/rasisera.png" class="maskot-left">
+
+    <!-- MASKOT KANAN -->
+    <img src="images/inosera.png" class="maskot-right">
+
     <div class="login-container">
         <div class="login-card">
             <div class="logo-section">
                 <div class="logo">
-                    <img src ="images/logosekola.png" alt="Logo Sekolah" style="width:40px; height:40px;">
+                    <img src="images/logosekola.png" style="width:40px;height:40px;">
                 </div>
                 <h1 class="login-title">Selamat Datang</h1>
                 <p class="login-subtitle">Login ke Sistem Disposisi Surat</p>
@@ -296,15 +272,15 @@
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label">NIP</label>
-                    <input type="text" class="form-input" id="nip" placeholder="Masukkan NIP" required>
+                    <label class="form-label">Email</label>
+                    <input type="text" class="form-input" id="email" placeholder="Masukkan Email" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Password</label>
                     <div class="password-wrapper">
-                        <input type="password" class="form-input" id="password" placeholder="Masukkan Password" required>
-                        <span class="toggle-password" id="togglePassword">👁️</span>
+                        <input type="password" class="form-input" id="password" required>
+                        <span class="toggle-password" id="togglePassword" placeholder="Masukkan Password">👁️</span>
                     </div>
                 </div>
 
@@ -320,8 +296,7 @@
 
                 <div class="remember-forgot">
                     <label class="remember-me">
-                        <input type="checkbox" id="rememberMe">
-                        <span>Ingat Saya</span>
+                        <input type="checkbox" id="rememberMe"> Ingat Saya
                     </label>
                     <a href="#" class="forgot-password">Lupa Password?</a>
                 </div>
@@ -329,9 +304,7 @@
                 <button type="submit" class="btn-login">🔐 Login</button>
             </form>
 
-            <div class="divider">
-                <span>atau</span>
-            </div>
+            <div class="divider"><span>atau</span></div>
 
             <div class="register-link">
                 Belum punya akun? <a href="daftar.html">Daftar Sekarang</a>
@@ -340,13 +313,13 @@
     </div>
 
     <script>
-        // Toggle Password Visibility
+        // Toggle Password
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
 
         togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
             this.textContent = type === 'password' ? '👁️' : '🙈';
         });
 
@@ -355,53 +328,48 @@
         const alertBox = document.getElementById('alertBox');
 
         loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        e.preventDefault();
 
-            const nip = document.getElementById('nip').value;
-            const password = document.getElementById('password').value;
-            const role = document.getElementById('role').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const role = document.getElementById('role').value;
 
-            // Validasi
-            if (!nip || !password || !role) {
-                showAlert('Semua field harus diisi!', 'error');
-                return;
-            }
+        // Cek field kosong
+        if (!email || !password || !role) {
+            showAlert('Semua field harus diisi!', 'error');
+            return;
+        }
 
-            // Simulasi login (ganti dengan API call nanti)
-            // Demo credentials:
-            // User: NIP=123456, Pass=user123, Role=user
-            // TU: NIP=111111, Pass=tu123, Role=tu
-            // Kepsek: NIP=999999, Pass=kepsek123, Role=kepsek
+        // Validasi email wajib format @gmail.com
+        if (!email.endsWith("@gmail.com")) {
+            showAlert('Email harus menggunakan format @gmail.com!', 'error');
+            return;
+        }
 
-            if (nip === '123456' && password === 'user123' && role === 'user') {
-                showAlert('Login berhasil! Mengarahkan ke dashboard user...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'user-home.html';
-                }, 1500);
-            } else if (nip === '111111' && password === 'tu123' && role === 'tu') {
-                showAlert('Login berhasil! Mengarahkan ke dashboard TU...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'home.html';
-                }, 1500);
-            } else if (nip === '999999' && password === 'kepsek123' && role === 'kepsek') {
-                showAlert('Login berhasil! Mengarahkan ke dashboard Kepala Sekolah...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'kepsek-home.html';
-                }, 1500);
-            } else {
-                showAlert('NIP, Password, atau Role tidak sesuai!', 'error');
-            }
-        });
+        // Original login checks (TIDAK DIUBAH)
+        if (email === '123456@gmail.com' && password === 'user123' && role === 'user') {
+            showAlert('Login berhasil! Mengarahkan...', 'success');
+            setTimeout(() => window.location.href = 'user-home.html', 1200);
+        } else if (email === '111111@gmail.com' && password === 'tu123' && role === 'tu') {
+            showAlert('Login berhasil! Mengarahkan...', 'success');
+            setTimeout(() => window.location.href = 'home.html', 1200);
+        } else if (email === '999999@gmail.com' && password === 'kepsek123' && role === 'kepsek') {
+            showAlert('Login berhasil! Mengarahkan...', 'success');
+            setTimeout(() => window.location.href = 'kepsek_home.html', 1200);
+        } else {
+            showAlert('Email, Password, atau Role salah!', 'error');
+        }
+    });
 
-        function showAlert(message, type) {
-            alertBox.textContent = message;
+
+        function showAlert(msg, type) {
+            alertBox.textContent = msg;
             alertBox.className = 'alert alert-' + type;
             alertBox.style.display = 'block';
 
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 5000);
+            setTimeout(() => alertBox.style.display = 'none', 4500);
         }
     </script>
+
 </body>
 </html>
