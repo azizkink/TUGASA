@@ -17,60 +17,64 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
-            /* DIGANTI - background cover seperti contoh */
             background: url('images/cover.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-
+            background-attachment: fixed;
             position: relative;
             padding: 2rem 0;
+            overflow-y: auto;
         }
 
-        /* LAPISAN GRADIENT (tetap ada) */
         body::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0.6);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(2px);
             z-index: 1;
         }
-
-        /* ===== TAMBAHAN MASKOT ===== */
-
-        .maskot-left {
-            position: absolute;
+        /* Maskot Kiri - Inosera */
+        .mascot-left {
+            position: fixed;
             top: 50%;
             left: 3%;
             transform: translateY(-50%);
             width: 180px;
+            height: auto;
             z-index: 2;
-            animation: float 3s ease-in-out infinite;
+            animation: floatLeft 3s ease-in-out infinite;
         }
 
-        .maskot-right {
-            position: absolute;
+        @keyframes floatLeft {
+            0%, 100% { transform: translateY(-50%); }
+            50% { transform: translateY(calc(-50% - 15px)); }
+        }
+
+        /* Maskot Kanan - Rasisera */
+        .mascot-right {
+            position: fixed;
             top: 50%;
             right: 3%;
             transform: translateY(-50%);
             width: 180px;
+            height: auto;
             z-index: 2;
-            animation: float 3s ease-in-out infinite reverse;
+            animation: floatRight 3.5s ease-in-out infinite;
         }
 
-
-        @keyframes float {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes floatRight {
+            0%, 100% { transform: translateY(-50%); }
+            50% { transform: translateY(calc(-50% - 20px)); }
         }
-
-        /* ===== KARTU REGISTER (kode asli tetap) ===== */
 
         .register-container {
             position: relative;
-            z-index: 3;
+            z-index: 2;
             width: 100%;
             max-width: 550px;
             padding: 2rem;
@@ -80,13 +84,20 @@
             background: white;
             border-radius: 20px;
             padding: 3rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
             animation: slideUp 0.6s ease-out;
+            border: 3px solid #667eea;
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .logo-section {
@@ -97,14 +108,13 @@
         .logo {
             width: 70px;
             height: 70px;
-            background: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 18px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
             margin-bottom: 1rem;
-            border: 3px solid #667eea;
         }
 
         .register-title {
@@ -125,7 +135,9 @@
             gap: 1rem;
         }
 
-        .form-group { margin-bottom: 1.2rem; }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
 
         .form-label {
             display: block;
@@ -142,7 +154,8 @@
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 0.9rem;
-            transition: 0.3s ease;
+            transition: all 0.3s ease;
+            outline: none;
         }
 
         .form-input:focus,
@@ -151,7 +164,14 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .password-wrapper { position: relative; }
+        .form-select {
+            background: white;
+            cursor: pointer;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
 
         .toggle-password {
             position: absolute;
@@ -160,14 +180,31 @@
             transform: translateY(-50%);
             cursor: pointer;
             font-size: 1.2rem;
+            user-select: none;
         }
 
         .terms-checkbox {
             display: flex;
+            align-items: flex-start;
             gap: 0.7rem;
             margin-bottom: 1.5rem;
-            color: #4a5568;
             font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .terms-checkbox input {
+            margin-top: 0.2rem;
+            cursor: pointer;
+        }
+
+        .terms-checkbox a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .terms-checkbox a:hover {
+            color: #764ba2;
         }
 
         .btn-register {
@@ -180,7 +217,7 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s ease;
+            transition: all 0.3s ease;
             margin-bottom: 1.5rem;
         }
 
@@ -189,92 +226,164 @@
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .btn-register:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #718096;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-link {
+            text-align: center;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #764ba2;
+        }
+
+        .alert {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: #e2e8f0;
+            margin-top: 0.3rem;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            width: 0%;
+        }
+
+        .strength-weak .strength-fill {
+            width: 33%;
+            background: #ef4444;
+        }
+
+        .strength-medium .strength-fill {
+            width: 66%;
+            background: #f59e0b;
+        }
+
+        .strength-strong .strength-fill {
+            width: 100%;
+            background: #10b981;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
-            .maskot-left,
-            .maskot-right {
-                width: 120px;
-                opacity: 0.7;
+            .register-container {
+                padding: 1rem;
             }
 
-            .register-card { padding: 2rem 1.5rem; }
+            .register-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .register-title {
+                font-size: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .mascot-left,
+            .mascot-right {
+                display: none;
+            }
         }
     </style>
 </head>
-
 <body>
-
-    <!-- MASKOT KIRI -->
-    <img src="images/rasisera.png" class="maskot-left" alt="Maskot Rasisera">
-
-    <!-- MASKOT KANAN -->
-    <img src="images/inosera.png" class="maskot-right" alt="Maskot Inosera">
+    <!-- Maskot Kiri - Inosera -->
+    <img src="images/rasisera.png" alt="Maskot Inosera" class="mascot-left">
+    
+    <!-- Maskot Kanan - Rasisera -->
+    <img src="images/inosera.png" alt="Maskot Rasisera" class="mascot-right">
 
     <div class="register-container">
         <div class="register-card">
             <div class="logo-section">
-                <div class="logo">
-                    <img src="images/logosekola.png" alt="Logo Sekolah" style="width:40px; height:40px;">
-                </div>
+                <div class="logo">🏫</div>
                 <h1 class="register-title">Buat Akun Baru</h1>
                 <p class="register-subtitle">Daftar untuk menggunakan Sistem Disposisi Surat</p>
             </div>
 
-            <!-- (SEMUA FORM & SCRIPT TETAP SAMA TANPA DIUBAH) -->
-
             <div id="alertBox" class="alert"></div>
 
             <form id="registerForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Nama Depan</label>
-                        <input type="text" class="form-input" id="firstName" placeholder="Nama Depan" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Nama Belakang</label>
-                        <input type="text" class="form-input" id="lastName" placeholder="Nama Belakang" required>
-                    </div>
-                </div>
-
                 <div class="form-group">
-                    <label class="form-label">NIP</label>
-                    <input type="text" class="form-input" id="nip" placeholder="Nomor Induk Pegawai/Siswa" required>
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-input" id="fullName" placeholder="Masukkan nama lengkap" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Email</label>
                     <input type="email" class="form-input" id="email" placeholder="nama@email.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Nomor Telepon</label>
-                    <input type="tel" class="form-input" id="phone" placeholder="08xxxxxxxxxx" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Role</label>
-                    <select class="form-select" id="role" required>
-                        <option value="">Pilih Role</option>
-                        <option value="user">User (Siswa/Guru)</option>
-                        <option value="tu">Tata Usaha (TU)</option>
-                        <option value="kepsek">Kepala Sekolah</option>
-                    </select>
-                </div>
-
-                <div id="userTypeGroup" class="form-group" style="display: none;">
-                    <label class="form-label">Tipe User</label>
-                    <select class="form-select" id="userType">
-                        <option value="">Pilih Tipe</option>
-                        <option value="siswa">Siswa</option>
-                        <option value="guru">Guru</option>
-                        <option value="staff">Staff</option>
-                    </select>
-                </div>
-
-                <div id="classGroup" class="form-group" style="display: none;">
-                    <label class="form-label">Kelas/Jurusan</label>
-                    <input type="text" class="form-input" id="class" placeholder="Contoh: XII RPL 1">
                 </div>
 
                 <div class="form-group">
@@ -296,6 +405,16 @@
                         <input type="password" class="form-input" id="confirmPassword" placeholder="Ulangi password" required>
                         <span class="toggle-password" id="toggleConfirmPassword">👁️</span>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-select" id="role" required>
+                        <option value="">Pilih Role</option>
+                        <option value="tu">Tata Usaha (TU)</option>
+                        <option value="kepsek">Kepala Sekolah</option>
+                        <option value="lainnya">Lainnya</option>
+                    </select>
                 </div>
 
                 <div class="terms-checkbox">
@@ -362,29 +481,6 @@
             }
         });
 
-        // Show/Hide User Type based on Role
-        const roleSelect = document.getElementById('role');
-        const userTypeGroup = document.getElementById('userTypeGroup');
-        const classGroup = document.getElementById('classGroup');
-        const userTypeSelect = document.getElementById('userType');
-
-        roleSelect.addEventListener('change', function() {
-            if (this.value === 'user') {
-                userTypeGroup.style.display = 'block';
-            } else {
-                userTypeGroup.style.display = 'none';
-                classGroup.style.display = 'none';
-            }
-        });
-
-        userTypeSelect.addEventListener('change', function() {
-            if (this.value === 'siswa') {
-                classGroup.style.display = 'block';
-            } else {
-                classGroup.style.display = 'none';
-            }
-        });
-
         // Form Submission
         const registerForm = document.getElementById('registerForm');
         const alertBox = document.getElementById('alertBox');
@@ -393,18 +489,15 @@
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const nip = document.getElementById('nip').value;
+            const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const role = document.getElementById('role').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = document.getElementById('role').value;
             const agreeTerms = document.getElementById('agreeTerms').checked;
 
             // Validasi
-            if (!firstName || !lastName || !nip || !email || !phone || !role || !password || !confirmPassword) {
+            if (!fullName || !email || !password || !confirmPassword || !role) {
                 showAlert('Semua field harus diisi!', 'error');
                 return;
             }
@@ -431,14 +524,7 @@
                 return;
             }
 
-            // Validasi phone format
-            const phoneRegex = /^[0-9]{10,13}$/;
-            if (!phoneRegex.test(phone)) {
-                showAlert('Format nomor telepon tidak valid!', 'error');
-                return;
-            }
-
-            // Simulasi registrasi (ganti dengan API call nanti)
+            // Simulasi registrasi
             btnRegister.disabled = true;
             btnRegister.textContent = '⏳ Mendaftar...';
 
