@@ -9,7 +9,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
+        }go run main.go
+
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -809,7 +810,6 @@
             sidebar.classList.toggle('show');
         });
 
-        // Close sidebar when clicking outside on mobile
         document.addEventListener('click', (e) => {
             if (window.innerWidth <= 768) {
                 if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
@@ -818,31 +818,34 @@
             }
         });
 
-        // Approve Surat
+        
         function approveSurat(id) {
             const modal = confirm('Apakah Anda yakin ingin menyetujui surat ini?');
             if (modal) {
-                // Redirect ke halaman detail dengan form approval
                 window.location.href = `kepsek-approve-form.html?id=${id}`;
             }
         }
 
-        // Reject Surat
         function rejectSurat(id) {
             const reason = prompt('Masukkan alasan penolakan:');
             if (reason) {
                 alert(`Surat telah ditolak dengan alasan: ${reason}`);
-                // Di sini nanti akan ada API call untuk update status
                 location.reload();
             }
         }
 
-        // Logout
+        
         function logout() {
             if (confirm('Apakah Anda yakin ingin logout?')) {
                 window.location.href = 'login.html';
             }
         }
+    const role = localStorage.getItem("role");
+
+    if (role !== "kepsek") {
+        window.location.href = "login.html";
+    }
+
     </script>
 </body>
 </html>

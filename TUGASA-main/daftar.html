@@ -436,116 +436,109 @@
             </div>
         </div>
     </div>
-
     <script>
-        // Toggle Password Visibility
-        const togglePassword = document.getElementById('togglePassword');
-        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
+const togglePassword = document.getElementById('togglePassword');
+const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+const passwordInput = document.getElementById('password');
+const confirmPasswordInput = document.getElementById('confirmPassword');
 
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.textContent = type === 'password' ? '👁️' : '🙈';
+togglePassword.addEventListener('click', function() {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    this.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
+toggleConfirmPassword.addEventListener('click', function() {
+    const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    confirmPasswordInput.setAttribute('type', type);
+    this.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
+passwordInput.addEventListener('input', function() {
+    const password = this.value;
+    const strengthDiv = document.getElementById('passwordStrength');
+    if (password.length === 0) { strengthDiv.className = 'password-strength'; return; }
+
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+    if (password.match(/[0-9]/)) strength++;
+    if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+    if (strength <= 1) strengthDiv.className = 'password-strength strength-weak';
+    else if (strength <= 3) strengthDiv.className = 'password-strength strength-medium';
+    else strengthDiv.className = 'password-strength strength-strong';
+});
+
+const registerForm = document.getElementById('registerForm');
+const alertBox = document.getElementById('alertBox');
+
+function showAlert(message, type) {
+    alertBox.textContent = message;
+    alertBox.className = 'alert ' + (type === 'success' ? 'alert-success' : 'alert-error');
+    alertBox.style.display = 'block';
+    setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
+}
+
+registerForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const role = document.getElementById('role').value;
+    const agreeTerms = document.getElementById('agreeTerms').checked;
+
+    if (!fullName || !email || !password || !confirmPassword || !role) {
+        showAlert('Semua field harus diisi!', 'error');
+        return;
+    }
+
+    if (password.length < 8) {
+        showAlert('Password minimal 8 karakter!', 'error');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showAlert('Password dan Konfirmasi Password tidak sama!', 'error');
+        return;
+    }
+
+    if (!agreeTerms) {
+        showAlert('Anda harus menyetujui Syarat & Ketentuan!', 'error');
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showAlert('Format email tidak valid!', 'error');
+        return;
+    }
+
+    try {
+        const res = await fetch("http://localhost:7000/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: fullName, email, password, role })
         });
 
-        toggleConfirmPassword.addEventListener('click', function() {
-            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPasswordInput.setAttribute('type', type);
-            this.textContent = type === 'password' ? '👁️' : '🙈';
-        });
+        const data = await res.json();
 
-        // Password Strength
-        passwordInput.addEventListener('input', function() {
-            const password = this.value;
-            const strengthDiv = document.getElementById('passwordStrength');
-            
-            if (password.length === 0) {
-                strengthDiv.className = 'password-strength';
-                return;
-            }
-
-            let strength = 0;
-            if (password.length >= 8) strength++;
-            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
-            if (password.match(/[0-9]/)) strength++;
-            if (password.match(/[^a-zA-Z0-9]/)) strength++;
-
-            if (strength <= 1) {
-                strengthDiv.className = 'password-strength strength-weak';
-            } else if (strength <= 3) {
-                strengthDiv.className = 'password-strength strength-medium';
-            } else {
-                strengthDiv.className = 'password-strength strength-strong';
-            }
-        });
-
-        // Form Submission
-        const registerForm = document.getElementById('registerForm');
-        const alertBox = document.getElementById('alertBox');
-        const btnRegister = document.getElementById('btnRegister');
-
-        registerForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const role = document.getElementById('role').value;
-            const agreeTerms = document.getElementById('agreeTerms').checked;
-
-            // Validasi
-            if (!fullName || !email || !password || !confirmPassword || !role) {
-                showAlert('Semua field harus diisi!', 'error');
-                return;
-            }
-
-            if (password.length < 8) {
-                showAlert('Password minimal 8 karakter!', 'error');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                showAlert('Password dan Konfirmasi Password tidak sama!', 'error');
-                return;
-            }
-
-            if (!agreeTerms) {
-                showAlert('Anda harus menyetujui Syarat & Ketentuan!', 'error');
-                return;
-            }
-
-            // Validasi email format
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showAlert('Format email tidak valid!', 'error');
-                return;
-            }
-
-            // Simulasi registrasi
-            btnRegister.disabled = true;
-            btnRegister.textContent = '⏳ Mendaftar...';
-
-            setTimeout(() => {
-                showAlert('Pendaftaran berhasil! Menunggu persetujuan dari Tata Usaha...', 'success');
-                
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2000);
-            }, 1500);
-        });
-
-        function showAlert(message, type) {
-            alertBox.textContent = message;
-            alertBox.className = 'alert alert-' + type;
-            alertBox.style.display = 'block';
-
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 5000);
+        if (!res.ok) {
+            showAlert(data.error || "Gagal mendaftar!", "error");
+            return;
         }
-    </script>
+
+        showAlert("Registrasi berhasil! Silakan login...", "success");
+        setTimeout(() => window.location.href = "login.html", 1500);
+
+    } catch (err) {
+        console.error(err);
+        showAlert("Gagal menghubungi server!", "error");
+    }
+});
+</script>
+   
 </body>
 </html>
