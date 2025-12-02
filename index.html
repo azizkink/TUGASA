@@ -91,7 +91,7 @@
             box-shadow: 0 5px 15px rgba(255,255,255,0.3);
         }
 
-
+        /* Hero Section */
         .hero {
             position: relative;
             width: 100%;
@@ -145,7 +145,7 @@
             50% { transform: translateY(-20px); }
         }
 
-
+        /* Decorative elements */
         .circle-decoration-1 {
             content: '';
             position: absolute;
@@ -430,6 +430,7 @@
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-overlay"></div>
 
@@ -446,6 +447,7 @@
     </section>
 
 
+    <!-- Features Section -->
     <section class="features">
         <div class="container">
             <h2 class="section-title">Fitur Unggulan</h2>
@@ -508,6 +510,7 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <p>&copy; 2025 SMKN 2 Singosari. Sistem Disposisi Surat Digital.</p>
@@ -516,6 +519,7 @@
     </footer>
 
     <script>
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -525,6 +529,7 @@
             });
         });
 
+        // Animate stats on scroll
         const observerOptions = {
             threshold: 0.5,
             rootMargin: '0px'
