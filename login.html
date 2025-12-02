@@ -39,6 +39,7 @@
             z-index: 1;
         }
 
+        /* Maskot Kiri - Rasisera */
         .mascot-left {
             position: fixed;
             top: 50%;
@@ -55,6 +56,7 @@
             50% { transform: translateY(calc(-50% - 15px)); }
         }
 
+        /* Maskot Kanan - Inosera */
         .mascot-right {
             position: fixed;
             top: 50%;
@@ -320,8 +322,10 @@
     </style>
 </head>
 <body>
+    <!-- Maskot Kiri - Rasisera -->
     <img src="images/inosera.png" alt="Maskot Rasisera" class="mascot-left">
     
+    <!-- Maskot Kanan - Inosera -->
     <img src="images/rasisera.png" alt="Maskot Inosera" class="mascot-right">
 
     <div class="login-container">
@@ -336,7 +340,7 @@
 
             <div id="alertBox" class="alert"></div>
 
-            <form id="loginForm" method="POST">
+            <form id="loginForm">
                 <div class="form-group">
                     <label class="form-label">Email</label>
                     <input type="email" class="form-input" id="email" placeholder="Masukkan Email" required>
@@ -368,7 +372,7 @@
                     <a href="#" class="forgot-password">Lupa Password?</a>
                 </div>
 
-                <button type="submit" id="loginBtn" class="btn-login">🔐 Login</button>
+                <button type="submit" class="btn-login">🔐 Login</button>
             </form>
 
             <div class="divider">
@@ -380,135 +384,83 @@
             </div>
         </div>
     </div>
+
     <script>
-    const togglePassword = document.getElementById('togglePassword');
-const passwordInput = document.getElementById('password');
-const loginForm = document.getElementById('loginForm');
-const alertBox = document.getElementById('alertBox');
-const loginBtn = document.getElementById('loginBtn');
+        // Toggle Password Visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
 
-togglePassword.addEventListener('click', function() {
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-    this.textContent = type === 'password' ? '👁️' : '🙈';
-});
-
-loginForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const email = document.getElementById('email').value.trim();
-    const password = passwordInput.value.trim();
-    const role = document.getElementById('role').value.trim();
-
-    if (!email || !password || !role) {
-        showAlert('Semua field harus diisi!', 'error');
-        return;
-    }
-
-    try {
-        const res = await fetch("http://localhost:7000/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password, role })
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
         });
 
-        const data = await res.json();
+        // Form Submission
+        const loginForm = document.getElementById('loginForm');
+        const alertBox = document.getElementById('alertBox');
 
-        if (!res.ok) {
-            showAlert(data.error || "Email atau password salah!", 'error');
-            return;
-        }
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("role", data.user.role);
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
 
-        if (data.user.role === "tu") window.location.href = "home.html";
-        else if (data.user.role === "kepsek") window.location.href = "kepsek_home.html";
-        else window.location.href = "user-home.html";
-
-    } catch (err) {
-        console.error(err);
-        showAlert("Gagal menghubungi server!", "error");const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
-
-    togglePassword.addEventListener('click', function() {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.textContent = type === 'password' ? '👁️' : '🙈';
-    });
-
-    const loginForm = document.getElementById('loginForm');
-    const alertBox = document.getElementById('alertBox');
-    const loginBtn = document.getElementById('loginBtn');
-
-    login.addEventListener('click', async function(e) {
-        e.preventDefault();
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const role = document.getElementById('role').value.trim();
-
-        if (!email || !password || !role) {
-            showAlert('Semua field harus diisi!', 'error');
-            return;
-        }
-
-        try {
-            const res = await fetch("http://localhost:7000/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, password, role })
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                showAlert(data.error || "Email atau password salah!", 'error');
+            // Validasi
+            if (!email || !password || !role) {
+                showAlert('Semua field harus diisi!', 'error');
                 return;
             }
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("role", data.user.role);
 
-            if (data.user.role === "tu") {
-                window.location.href = "home.html";
-            } 
-            else if (data.user.role === "kepsek") {
-                window.location.href = "kepsek-home.html";
-            }
-            else if (data.user.role === "user") {
-                window.location.href = "user-home.html";
+            // Validasi format email (harus ada @)
+            if (!email.includes('@')) {
+                showAlert('Email harus mengandung karakter @!', 'error');
+                return;
             }
 
-        } catch (err) {
-            console.error(err);
-            showAlert("Gagal menghubungi server!", "error");
+            // Validasi format email lengkap
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('Format email tidak valid! Contoh: nama@domain.com', 'error');
+                return;
+            }
+
+            // Simulasi login
+            // Demo credentials:
+            // User: abc@gmail.com, Pass=user123, Role=user
+            // TU: 123@gmail.com, Pass=tu123, Role=tu
+            // Kepsek: xyz@gmail.com, Pass=kepsek123, Role=kepsek
+
+            if (email === 'abc@gmail.com' && password === 'user123' && role === 'user') {
+                showAlert('Login berhasil! Mengarahkan ke dashboard user...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'user-home.html';
+                }, 1500);
+            } else if (email === '123@gmail.com' && password === 'tu123' && role === 'tu') {
+                showAlert('Login berhasil! Mengarahkan ke dashboard TU...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1500);
+            } else if (email === 'xyz@gmail.com' && password === 'kepsek123' && role === 'kepsek') {
+                showAlert('Login berhasil! Mengarahkan ke dashboard Kepala Sekolah...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'kepsek-home.html';
+                }, 1500);
+            } else {
+                showAlert('Email, Password, atau Role tidak sesuai!', 'error');
+            }
+        });
+
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = 'alert alert-' + type;
+            alertBox.style.display = 'block';
+
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
         }
-    });
-
-    function showAlert(message, type) {
-        alertBox.textContent = message;
-        alertBox.className = 'alert alert-' + type;
-        alertBox.style.display = 'block';
-
-        setTimeout(() => {
-            alertBox.style.display = 'none';
-        }, 5000);
-    }
-    }
-});
-
-function showAlert(message, type) {
-    alertBox.textContent = message;
-    alertBox.className = 'alert alert-' + type;
-    alertBox.style.display = 'block';
-
-    setTimeout(() => {
-        alertBox.style.display = 'none';
-    }, 5000);
-}
-</script>
-
+    </script>
 </body>
 </html>
