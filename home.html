@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@
             color: white;
             display: flex;
             flex-direction: column;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
@@ -36,18 +37,20 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .logo-sidebar {
             width: 50px;
             height: 50px;
-            background: white;
-            border-radius: 10px;
+            border-radius: 50%;
+            /* jadi bulat */
+            overflow: hidden;
+            /* potong gambar biar ikut bulat */
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
         }
 
         .school-name-sidebar {
@@ -81,12 +84,12 @@
         }
 
         .menu-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-left-color: #fff;
         }
 
         .menu-item.active {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
             border-left-color: #fff;
             font-weight: 600;
         }
@@ -100,7 +103,7 @@
         .sidebar-footer {
             margin-top: auto;
             padding: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .user-profile {
@@ -128,11 +131,35 @@
             flex-direction: column;
         }
 
+        .content-area {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #00BFFF);
+            padding: 2rem;
+            border-radius: 16px;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            font-size: 1.05rem;
+        }
+
         /* Top Navbar */
         .top-navbar {
             background: white;
             padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -184,25 +211,6 @@
             border: 2px solid white;
         }
 
-        .upload-btn {
-            padding: 0.7rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
         /* Content Area */
         .content-area {
             padding: 2rem;
@@ -221,7 +229,7 @@
             background: white;
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -231,7 +239,7 @@
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
         .stat-icon {
@@ -280,7 +288,7 @@
             background: white;
             border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             margin-bottom: 1.5rem;
         }
 
@@ -434,30 +442,31 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo-sidebar">
-                <img src ="images/logosekola.png" alt="Logo Sekolah" style="width:40px; height:40px;">
+                <img src="image/logosekola.png" alt="Logo Sekolah" style="width:40px; height:40px;">
             </div>
             <div class="school-name-sidebar">SMKN 2 SINGOSARI</div>
         </div>
 
         <nav class="menu-section">
-            <a href="#" class="menu-item active">
+            <a href="home" class="menu-item active">
                 <span class="menu-icon">🏠</span>
                 <span>Home</span>
             </a>
 
             <div class="menu-title">Menu Surat</div>
-            
-            <a href="#" class="menu-item">
+
+            <a href="surat_masuk.html" class="menu-item">
                 <span class="menu-icon">📨</span>
                 <span>Surat Masuk</span>
             </a>
 
-            <a href="#" class="menu-item">
+            <a href="surat_keluar.html" class="menu-item">
                 <span class="menu-icon">📤</span>
                 <span>Surat Keluar</span>
             </a>
@@ -501,15 +510,15 @@
                     🔔
                     <span class="notification-badge"></span>
                 </button>
-                <button class="upload-btn">
-                    <span>📄</span>
-                    Upload File
-                </button>
             </div>
         </nav>
 
         <!-- Content Area -->
         <div class="content-area">
+
+            <div class="welcome-banner">
+                <h2>Selamat Datang, Administrator! 👔</h2>
+            </div>
             <!-- Stats Cards -->
             <div class="stats-grid">
                 <div class="stat-card">
@@ -574,7 +583,9 @@
             <div class="section">
                 <div class="section-header">
                     <h2 class="section-title">⚠️ Pendaftaran User Menunggu Persetujuan</h2>
-                    <span style="background: #fef3c7; color: #d97706; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">3 Pending</span>
+                    <span
+                        style="background: #fef3c7; color: #d97706; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">3
+                        Pending</span>
                 </div>
 
                 <div class="user-approval-item">
@@ -582,9 +593,9 @@
                     <div class="user-approval-info">
                         <div class="user-approval-name">Ahmad Fauzi</div>
                         <div class="user-approval-details">
-                            <span>📧 ahmad.fauzi@student.smkn2.sch.id</span>
+                            <span>📧 ahmad.fauzi@teacher.smkn2.sch.id</span>
                             <span>📱 081234567890</span>
-                            <span>👥 Siswa - XII RPL 1</span>
+                            <span>👥 Guru - Sejarah Indonesia</span>
                         </div>
                         <div class="user-approval-time">Mendaftar 10 menit yang lalu</div>
                     </div>
@@ -616,9 +627,9 @@
                     <div class="user-approval-info">
                         <div class="user-approval-name">Budi Santoso</div>
                         <div class="user-approval-details">
-                            <span>📧 budi.santoso@student.smkn2.sch.id</span>
+                            <span>📧 budi.santoso@teacher.smkn2.sch.id</span>
                             <span>📱 083456789012</span>
-                            <span>👥 Siswa - XI TKJ 2</span>
+                            <span>👥 Guru - Matematika</span>
                         </div>
                         <div class="user-approval-time">Mendaftar 3 jam yang lalu</div>
                     </div>
@@ -687,7 +698,7 @@
     <script>
         // Add smooth transitions
         document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function(e) {
+            item.addEventListener('click', function (e) {
                 document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
             });
@@ -695,7 +706,7 @@
 
         // User Approval Actions
         document.querySelectorAll('.btn-approve').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const userName = this.closest('.user-approval-item').querySelector('.user-approval-name').textContent;
                 if (confirm(`Apakah Anda yakin ingin menyetujui pendaftaran ${userName}?`)) {
                     alert(`✅ Pendaftaran ${userName} telah disetujui!`);
@@ -712,7 +723,7 @@
         });
 
         document.querySelectorAll('.btn-reject').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const userName = this.closest('.user-approval-item').querySelector('.user-approval-name').textContent;
                 const reason = prompt(`Alasan menolak pendaftaran ${userName}:`);
                 if (reason) {
@@ -753,4 +764,5 @@
         document.head.appendChild(style);
     </script>
 </body>
+
 </html>
